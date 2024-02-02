@@ -1,0 +1,39 @@
+  GNU nano 6.2                                                                                         script.sh                                                                                                   #!/bin/bash
+
+min_length=10
+max_length=32
+# I used this 2 variables to easily change their value and avoid users choosing a number to big. ( ex: 40000 )
+
+
+while true; do
+# I used -while- because I want the user to choose another value if they mistakenly or intentionally wrote a number outside the range.
+        echo "Password should be between $min_length and $max_length characters long.( 0 to exit script )"
+
+        read n
+# This will be the value that the script will work with = the length of password.
+
+        if [ $n == 0 ]; then
+                echo "Exiting script."
+                exit
+        fi
+# This -if- statement was added so that an user could exit the script without choosing a correct value.
+
+        if [ $n -ge $min_length ] && [ $n -le $max_length ]; then
+                generate_password(){
+                        tr -dc A-Za-z0-9 < /dev/urandom | head -c $n
+                }
+# This -if- statement ensures that the generated password adheres to the specified range of numbers, based on the user's preffered length.
+
+        random_password=$(generate_password)
+# With this statement I am calling out the function and assigning the result to the variable random_password.
+
+                echo "Random password: $random_password."
+                break # To exit the loop
+#If successfull, the script will print the password and exit the loop.
+
+else
+                echo "Password must be between $min_length and $max_length characters long."
+                echo "To exit the script please write 0."
+#If a number outside the range is introduced, the script will fail and try again.
+fi
+done
